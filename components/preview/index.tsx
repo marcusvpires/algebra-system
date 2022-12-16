@@ -1,12 +1,12 @@
 import * as S from './styled';
 import React from 'react';
 
-const Equation: React.FunctionComponent = (): JSX.Element => {
+const Preview: React.FunctionComponent = (): JSX.Element => {
   return (
     <S.Wrapper>
-      <p>Equation</p>
+      <p>Preview</p>
     </S.Wrapper>
   );
 };
 
-export default Equation;
+export default Preview;
