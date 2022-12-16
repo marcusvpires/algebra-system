@@ -1,10 +1,12 @@
 import * as S from './styled';
 import React from 'react';
 
+import Variable from './variable';
+
 const Variables: React.FunctionComponent = (): JSX.Element => {
   return (
     <S.Wrapper>
-      <p>Variables</p>
+      <Variable />
     </S.Wrapper>
   );
 };

@@ -7,7 +7,6 @@ export const Wrapper = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 2px solid #6f7479;
 `;
 
 export const Input = styled.textarea`
