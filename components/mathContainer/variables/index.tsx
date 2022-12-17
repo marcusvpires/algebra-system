@@ -7,6 +7,16 @@ const Variables: React.FunctionComponent = (): JSX.Element => {
   return (
     <S.Wrapper>
       <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
+      <Variable />
     </S.Wrapper>
   );
 };
