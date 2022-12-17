@@ -11,6 +11,19 @@ export const Wrapper = styled.section`
   font-family: 'Courier New', Courier, monospace;
 `;
 
+export const New = styled.button`
+  width: auto;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: medium;
+  color: #f2f2f3;
+  background-color: #282c44;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+`
+
 export const Parameter = styled.div`
   width: auto;
   display: flex;
