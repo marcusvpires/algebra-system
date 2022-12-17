@@ -23,7 +23,6 @@ export const New = styled.button`
   cursor: pointer;
 
 `
-
 export const Parameter = styled.div`
   width: auto;
   display: flex;

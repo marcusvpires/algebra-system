@@ -1,32 +1,42 @@
 import React, { ChangeEvent, FunctionComponent, useState } from 'react';
 import * as S from './styled';
 
-interface Parm {
-  color: string;
-  letter: string;
-  value: number;
-  base10: number;
-  unity: string;
+import { Parm } from '.';
+
+interface Props {
+  handleEdit: Function;
+  index: number;
+  parm: Parm;
 }
 
-const defaultParm = {
-  color: '#2cd9c5',
-  letter: 'a',
-  value: 0,
-  base10: 0,
-  unity: 'u',
+interface PrefixTableType {
+  [key: number]: string;
+}
+
+export const prefix: PrefixTableType = {
+  [15]: 'P',
+  [12]: 'T',
+  [9]: 'G',
+  [6]: 'M',
+  [3]: 'k',
+  [2]: 'h',
+  [1]: 'da',
+  [0]: 'N',
+  [-1]: 'd',
+  [-2]: 'c',
+  [-3]: 'm',
+  [-6]: 'μ',
+  [-9]: 'n',
+  [-12]: 'p',
 };
 
-const Parameter: FunctionComponent = (): JSX.Element => {
-  const [parm, setParm] = useState<Parm>(defaultParm);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.type === 'number') {
-      if (event.target.value.toString().length > event.target.maxLength) return;
-      console.log(event.target.value);
-    }
-    setParm({ ...parm, [event.target.name]: event.target.value });
-  };
+const Parameter: FunctionComponent<Props> = ({
+  handleEdit,
+  index,
+  parm,
+}): JSX.Element => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
+    handleEdit(index, event);
 
   return (
     <S.Parameter>
@@ -50,13 +60,13 @@ const Parameter: FunctionComponent = (): JSX.Element => {
       />
       <S.Span>=</S.Span>
       <S.InputNum
-        width='10rem'
+        width='8rem'
         type='number'
         name='value'
         placeholder='0'
         value={parm.value}
         onChange={handleChange}
-        maxLength={14}
+        maxLength={10}
       />
       <S.Span>.10^</S.Span>
       <S.InputNum
@@ -69,6 +79,9 @@ const Parameter: FunctionComponent = (): JSX.Element => {
         maxLength={2}
         color='#f7545f'
       />
+      <S.Span
+        style={{ width: '3rem' }}
+      >{prefix[parm.base10] ? prefix[parm.base10] : 'nd'}</S.Span>
       <S.Input
         width='8rem'
         type='text'
@@ -76,7 +89,7 @@ const Parameter: FunctionComponent = (): JSX.Element => {
         value={parm.unity}
         placeholder='u'
         onChange={handleChange}
-        maxLength={11}
+        maxLength={10}
       />
     </S.Parameter>
   );
