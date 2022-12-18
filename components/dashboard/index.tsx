@@ -11,11 +11,11 @@ import { context } from '../../pages/equation';
 
 type Expression = {
   simplify: {
-    value: string;
+    value: string | null;
     error: string | null;
   };
   evaluate: {
-    value: string;
+    value: string | null;
     error: string | null;
   };
 };
@@ -40,22 +40,57 @@ const updateExpession = (
   }
 };
 
+const errorMessage = (error: any) => {
+  let message = 'erro desconhecido';
+  if (error instanceof Error) message = error.message;
+  console.warn(message);
+  return message;
+};
+
 const Dashboard: FunctionComponent = (): JSX.Element => {
   const [expression, setExpression] = useState<Expression>({
     simplify: { value: '', error: null },
     evaluate: { value: '', error: null },
   });
   const formula = useContext(context);
-  const equation = formula?.equation;
+  const equation = formula?.equation?.trim();
 
   useEffect(() => {
     if (expression && equation) {
-      setExpression({
-        simplify: updateExpession(equation, simplify),
-        evaluate: updateExpession(equation, evaluate),
-      });
+      const newExpression = expression;
+      let simplified
+      try {
+        simplified = simplify(equation)
+        newExpression.simplify = {
+          value: simplified.toString(),
+          error: null,
+        };
+      } catch (error) {
+        newExpression.simplify = {
+          value: null,
+          error: errorMessage(error),
+        };
+      }
+      if (simplified) {
+        try {
+          const parameters = formula?.parms.reduce((acumulator, parm) => {
+            return { ...acumulator, [parm.letter]: parm.value };
+          }, {})
+          newExpression.evaluate = {
+            value: simplified.evaluate(parameters),
+            error: null,
+          };
+        } catch (error) {
+          newExpression.simplify = {
+            value: null,
+            error: errorMessage(error),
+          };
+        }
+      }
+      console.log(equation)
+      setExpression(newExpression);
     }
-  }, [equation]);
+  }, [formula]);
 
   return (
     <S.Wrapper>
