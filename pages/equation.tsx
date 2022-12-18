@@ -5,6 +5,7 @@ import { parse, simplify } from 'mathjs';
 import Parameters from '../components/Parameters';
 import Equation from '../components/equation';
 import Dashboard from '../components/dashboard';
+import Collection from '../components/collection';
 
 export const Wrapper = styled.main`
   height: 100vh;
@@ -171,7 +172,7 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
   return (
     <Wrapper>
       <Dashboard result={formula.result} colors={formula.colors} />
-
+      <Collection />
       <RightContainer>
         <Equation equation={formula.equation} handleEquation={handleEquation} colors={formula.colors} />
         <Parameters

@@ -8,21 +8,34 @@ export const Wrapper = styled.section`
 `;
 
 interface SimplifyProps {
-  error: boolean | any
+  error: boolean | any;
 }
 
 export const Result = styled.div<SimplifyProps>`
-  background-color: #0a0a0c;
-  border-radius: 5px;
-  margin: 1rem;
-  padding: 1.5rem;
-  height: 10rem;
+  height: 6rem;
   width: auto;
-  font-size: ${props => props.error ? 'medium' : 'larger'};
-  border: ${props => props.error ? '2px solid #e06b74' : 'none'};
+  margin: 0.5rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  background-color: #0a0a0c;
+  border: ${(props) => (props.error ? '2px solid #e06b74' : 'none')};
+  border-radius: 5px;
+  font-size: ${(props) => (props.error ? 'medium' : 'larger')};
+`;
+
+export const Title = styled.div`
+  padding-bottom: 1rem;
+  font-size: medium;
+  color: #ccccd3;
+`;
+
+export const Expression = styled.div`
   color: #f1f1f2;
-`
+  text-align: right;
+`;
 
 export const Char = styled.span`
-  color: ${props => props.color ? props.color : 'inherit'};
-`
+  color: ${(props) => (props.color ? props.color : 'inherit')};
+`;

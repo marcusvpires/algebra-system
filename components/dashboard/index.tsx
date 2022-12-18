@@ -15,21 +15,27 @@ const Dashboard: FunctionComponent<Props> = ({
   return (
     <S.Wrapper>
       <S.Result error={!result?.simplified}>
-        {result?.simplified
-          ? result?.simplified
-              ?.toString()
-              .split('')
-              .map((char: string, index: number) => {
-                return (
-                  <S.Char key={index} color={(colors as any)[char]}>
-                    {char}
-                  </S.Char>
-                );
-              })
-          : 'erro'}
+        <S.Title>Simplificação</S.Title>
+        <S.Expression>
+          {result?.simplified
+            ? result?.simplified
+                ?.toString()
+                .split('')
+                .map((char: string, index: number) => {
+                  return (
+                    <S.Char key={index} color={(colors as any)[char]}>
+                      {char}
+                    </S.Char>
+                  );
+                })
+            : 'erro'}
+        </S.Expression>
       </S.Result>
       <S.Result error={result?.error}>
-        {result?.evaluate ? result?.evaluate?.toString() : result?.error}
+        <S.Title>Resultado</S.Title>
+        <S.Expression>
+          {result?.evaluate ? result?.evaluate?.toString() : result?.error}
+        </S.Expression>
       </S.Result>
     </S.Wrapper>
   );
