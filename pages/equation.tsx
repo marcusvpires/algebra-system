@@ -1,11 +1,6 @@
-import React, {
-  ChangeEvent,
-  createContext,
-  FunctionComponent,
-  useState,
-} from 'react';
+import React, { ChangeEvent, FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
-import { parse, simplify, string } from 'mathjs';
+import { parse, simplify } from 'mathjs';
 
 import Parameters from '../components/Parameters';
 import Equation from '../components/equation';
@@ -55,8 +50,6 @@ interface Formula {
   result: Result;
   colors: Colors | unknown;
 }
-
-export const context = createContext<Formula | undefined>(undefined);
 
 const defaultParm = () => {
   const colors = [
@@ -177,20 +170,16 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
 
   return (
     <Wrapper>
-      <context.Provider value={formula}>
-        <RightContainer>
-          <Equation
-            equation={formula.equation}
-            handleEquation={handleEquation}
-          />
-          <Parameters
-            parms={formula.parms}
-            handleEdit={handleEdit}
-            handleNew={handleNew}
-          />
-        </RightContainer>
-        <Dashboard result={formula.result} colors={formula.colors} />
-      </context.Provider>
+      <Dashboard result={formula.result} colors={formula.colors} />
+
+      <RightContainer>
+        <Equation equation={formula.equation} handleEquation={handleEquation} colors={formula.colors} />
+        <Parameters
+          parms={formula.parms}
+          handleEdit={handleEdit}
+          handleNew={handleNew}
+        />
+      </RightContainer>
     </Wrapper>
   );
 };

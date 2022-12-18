@@ -1,22 +1,18 @@
 import * as S from './styled';
-import React, { ChangeEvent, useContext } from 'react';
-
-import { context } from '../../pages/equation';
+import React, { ChangeEvent } from 'react';
+import { Colors } from '../../pages/equation';
 
 interface Props {
   equation: string;
   handleEquation: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  colors: Colors | unknown;
 }
 
 const Equation: React.FunctionComponent<Props> = ({
   equation,
   handleEquation,
+  colors,
 }): JSX.Element => {
-  const formula = useContext(context);
-  const parmColor = formula?.parms.reduce((acumulator, parm) => {
-    return { ...acumulator, [parm.letter]: parm.color };
-  }, {});
-
   return (
     <S.Wrapper>
       <S.EquationInput
@@ -24,9 +20,15 @@ const Equation: React.FunctionComponent<Props> = ({
         value={equation}
         onChange={handleEquation}
       />
-      <S.Preview>{equation.split('').map((char: string, index: number) => {
-        return <S.Char key={index} color={(parmColor as any)[char]}>{char}</S.Char>
-      })}</S.Preview>
+      <S.Preview>
+        {equation.split('').map((char: string, index: number) => {
+          return (
+            <S.Char key={index} color={(colors as any)[char]}>
+              {char}
+            </S.Char>
+          );
+        })}
+      </S.Preview>
     </S.Wrapper>
   );
 };
