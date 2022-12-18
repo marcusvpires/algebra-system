@@ -6,10 +6,14 @@ const Equation: React.FunctionComponent = (): JSX.Element => {
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setEquation(event.target.value);
-  
+
   return (
     <S.Wrapper>
-      <S.EquationInput name='equation' value={equation} onChange={handleChange} />
+      <S.EquationInput
+        name='equation'
+        value={equation}
+        onChange={handleChange}
+      />
       <S.Preview>{equation}</S.Preview>
     </S.Wrapper>
   );
