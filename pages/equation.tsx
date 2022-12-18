@@ -22,7 +22,7 @@ interface Formula {
   parms: Parm[];
 }
 
-const context = createContext<Formula | undefined>(undefined);
+export const context = createContext<Formula | undefined>(undefined);
 
 const defaultParm = () => {
   const colors = ['red', 'purple', 'fuchsia', 'green', 'yellow', 'navy', 'blue']
