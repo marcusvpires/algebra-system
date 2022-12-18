@@ -37,6 +37,12 @@ const Dashboard: FunctionComponent<Props> = ({
           {result?.evaluate ? result?.evaluate?.toString() : result?.error}
         </S.Expression>
       </S.Result>
+      <S.Result error={result?.unity?.error}>
+        <S.Title>Unidade calculada</S.Title>
+        <S.Expression>
+          {result?.unity?.simplified ? result?.unity?.simplified?.toString() : result?.unity?.error}
+        </S.Expression>
+      </S.Result>
     </S.Wrapper>
   );
 };

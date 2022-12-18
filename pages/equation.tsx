@@ -38,6 +38,10 @@ export type Parm = {
 export type Result = {
   simplified: string | number | undefined;
   evaluate: string | number | undefined;
+  unity: {
+    simplified: string | number | undefined;
+    error: string | null;
+  };
   error: string | null;
 };
 
@@ -79,20 +83,24 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
         letter: 'x',
         value: 1,
         base10: 0,
-        unity: undefined,
+        unity: 'u',
       },
       {
         color: '#62aeef',
         letter: 'y',
         value: 2,
         base10: 0,
-        unity: undefined,
+        unity: 'v',
       },
     ],
     colors: { x: '#e06b74', y: '#62aeef' },
     result: {
       simplified: 'x + y',
       evaluate: 3,
+      unity: {
+        simplified: 'u + v',
+        error: null
+      },
       error: null,
     },
   });
@@ -101,10 +109,27 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
     const variables = parms.reduce((acumulator, parm) => {
       return { ...acumulator, [parm.letter]: parm.value };
     }, {});
+    const unityVars = parms.reduce((acumulator, parm) => {
+      return { ...acumulator, [parm.letter]: parm.unity };
+    }, {});
     let errorMessage = null;
     let expression;
     let simplified;
     let evaluate;
+    let unityErrorMessage = null;
+    let unitySimplified;
+    try {
+      let unityExpression = equation;
+      Object.entries(unityVars).forEach(([letter, unity]) => {
+        unityExpression = unityExpression.replaceAll(letter, unity as string);
+      });
+      expression = parse(unityExpression);
+      unitySimplified = simplify(expression);
+    } catch (error) {
+      unityErrorMessage = 'erro desconhecido';
+      if (error instanceof Error) unityErrorMessage = error.message;
+      console.warn(unityErrorMessage);
+    }
     try {
       expression = parse(equation);
       simplified = simplify(expression);
@@ -117,11 +142,19 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
     console.table({
       simplified: simplified?.toString(),
       evaluate: evaluate,
+      unity: {
+        error: unityErrorMessage,
+        simplified: unitySimplified?.toString(),
+      },
       error: errorMessage,
     });
     return {
       simplified: simplified?.toString(),
       evaluate: evaluate,
+      unity: {
+        error: unityErrorMessage,
+        simplified: unitySimplified?.toString(),
+      },
       error: errorMessage,
     };
   };
@@ -174,7 +207,11 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
       <Dashboard result={formula.result} colors={formula.colors} />
       <Collection />
       <RightContainer>
-        <Equation equation={formula.equation} handleEquation={handleEquation} colors={formula.colors} />
+        <Equation
+          equation={formula.equation}
+          handleEquation={handleEquation}
+          colors={formula.colors}
+        />
         <Parameters
           parms={formula.parms}
           handleEdit={handleEdit}
