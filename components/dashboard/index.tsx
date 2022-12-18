@@ -58,9 +58,9 @@ const Dashboard: FunctionComponent = (): JSX.Element => {
   useEffect(() => {
     if (expression && equation) {
       const newExpression = expression;
-      let simplified
+      let simplified;
       try {
-        simplified = simplify(equation)
+        simplified = simplify(equation);
         newExpression.simplify = {
           value: simplified.toString(),
           error: null,
@@ -75,27 +75,34 @@ const Dashboard: FunctionComponent = (): JSX.Element => {
         try {
           const parameters = formula?.parms.reduce((acumulator, parm) => {
             return { ...acumulator, [parm.letter]: parm.value };
-          }, {})
+          }, {});
           newExpression.evaluate = {
             value: simplified.evaluate(parameters),
             error: null,
           };
         } catch (error) {
-          newExpression.simplify = {
+          newExpression.evaluate = {
             value: null,
             error: errorMessage(error),
           };
         }
       }
-      console.log(equation)
+      console.log(equation);
+      console.log(newExpression);
       setExpression(newExpression);
     }
   }, [formula]);
 
   return (
     <S.Wrapper>
-      <S.Simplify>{expression?.simplify?.value}</S.Simplify>
-      <S.Simplify>{expression?.evaluate?.value}</S.Simplify>
+      <S.Simplify error={expression?.simplify?.error}>
+        {expression?.simplify?.error}
+        {expression?.simplify?.value}
+      </S.Simplify>
+      <S.Simplify error={expression?.evaluate?.error}>
+        {expression?.evaluate?.error}
+        {expression?.evaluate?.value}
+      </S.Simplify>
     </S.Wrapper>
   );
 };
