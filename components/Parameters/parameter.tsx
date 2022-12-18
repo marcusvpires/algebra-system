@@ -1,10 +1,10 @@
 import React, { ChangeEvent, FunctionComponent, useState } from 'react';
 import * as S from './styled';
 
-import { Parm } from '.';
+import { Parm } from '../../pages/equation';
 
 interface Props {
-  handleEdit: Function;
+  handleEdit: (index: number, event: ChangeEvent<HTMLInputElement>) => void;
   index: number;
   parm: Parm;
 }
