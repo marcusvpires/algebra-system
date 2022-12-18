@@ -24,8 +24,8 @@ const Equation: React.FunctionComponent<Props> = ({
         value={equation}
         onChange={handleEquation}
       />
-      <S.Preview>{equation.split('').map((char: string) => {
-        return <S.Char color={(parmColor as any)[char]}>{char}</S.Char>
+      <S.Preview>{equation.split('').map((char: string, index: number) => {
+        return <S.Char key={index} color={(parmColor as any)[char]}>{char}</S.Char>
       })}</S.Preview>
     </S.Wrapper>
   );

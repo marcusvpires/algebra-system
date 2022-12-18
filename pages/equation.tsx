@@ -4,10 +4,31 @@ import React, {
   FunctionComponent,
   useState,
 } from 'react';
-import * as S from '../styles/pages/Equation';
+import styled from 'styled-components';
 
 import Parameters from '../components/Parameters';
 import Equation from '../components/equation';
+import Dashboard from '../components/dashboard';
+
+export const Wrapper = styled.main`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0d1117;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: medium;
+`;
+
+export const RightContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  max-width: 35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+`;
 
 export type Parm = {
   color: string;
@@ -25,29 +46,36 @@ interface Formula {
 export const context = createContext<Formula | undefined>(undefined);
 
 const defaultParm = () => {
-  const colors = ['red', 'purple', 'fuchsia', 'green', 'yellow', 'navy', 'blue']
+  const colors = [
+    '#e06b74',
+    '#98c379',
+    '#e5c07a',
+    '#62aeef',
+    '#c678dd',
+    '#55b6c2',
+  ];
   return {
-    color: colors[Math.floor(Math.random()*7)],
+    color: colors[Math.floor(Math.random() * 7)],
     letter: 'x',
     value: 1,
     base10: 0,
     unity: undefined,
-  }
-} 
+  };
+};
 
 const EquationPage: FunctionComponent = (): JSX.Element => {
   const [formula, setFormula] = useState<Formula>({
     equation: 'x + y',
     parms: [
       {
-        color: 'red',
+        color: '#e06b74',
         letter: 'x',
         value: 1,
         base10: 0,
         unity: undefined,
       },
       {
-        color: 'blue',
+        color: '#62aeef',
         letter: 'x',
         value: 2,
         base10: 0,
@@ -68,21 +96,34 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
         else return { ...parm, [tg.name]: tg.value };
       }
       return parm;
-    })
-    setFormula({ equation: formula.equation, parms: newParms })
+    });
+    setFormula({ equation: formula.equation, parms: newParms });
   };
 
   const handleNew = () => {
-    setFormula({ equation: formula.equation, parms: [...formula.parms, defaultParm() ] });
+    setFormula({
+      equation: formula.equation,
+      parms: [...formula.parms, defaultParm()],
+    });
   };
 
   return (
-    <S.Wrapper>
+    <Wrapper>
       <context.Provider value={formula}>
-        <Equation equation={formula.equation} handleEquation={handleEquation} />
-        <Parameters parms={formula.parms} handleEdit={handleEdit} handleNew={handleNew} />
+        <RightContainer>
+          <Equation
+            equation={formula.equation}
+            handleEquation={handleEquation}
+          />
+          <Parameters
+            parms={formula.parms}
+            handleEdit={handleEdit}
+            handleNew={handleNew}
+          />
+        </RightContainer>
+        <Dashboard />
       </context.Provider>
-    </S.Wrapper>
+    </Wrapper>
   );
 };
 

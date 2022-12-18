@@ -2,9 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.section`
   position: relative;
-  width: 100%;
-  height: 10rem;
-  max-width: 40rem;
+  height: 12rem;
 `;
 
 export const EquationInput = styled.textarea`
@@ -12,10 +10,10 @@ export const EquationInput = styled.textarea`
   z-index: 1;
   height: 10rem;
   width: 100%;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: transparent;
   font-family: 'Courier New', Courier, monospace;
-  font-size: large;
+  font-size: larger;
   color: transparent;
   resize: none;
   border: none;
@@ -24,14 +22,13 @@ export const EquationInput = styled.textarea`
 `;
 
 export const Preview = styled.div`
-  position: absolute;
   z-index: 0;
-  padding: 1rem;
+  padding: 1.5rem;
   height: 10rem;
   width: 100%;
-  background-color: #140e2c;
+  background-color: #0a0a0c;
   font-family: 'Courier New', Courier, monospace;
-  font-size: large;
+  font-size: larger;
   color: #f2f2f3;
 `;
 
