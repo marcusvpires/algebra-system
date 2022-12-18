@@ -5,6 +5,7 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
+import { parse, simplify, string } from 'mathjs';
 
 import Parameters from '../components/Parameters';
 import Equation from '../components/equation';
@@ -38,9 +39,21 @@ export type Parm = {
   unity: string | undefined;
 };
 
+export type Result = {
+  simplified: string | number | undefined;
+  evaluate: string | number | undefined;
+  error: string | null;
+};
+
+export type Colors = {
+  [key: string]: string;
+};
+
 interface Formula {
   equation: string;
   parms: Parm[];
+  result: Result;
+  colors: Colors | unknown;
 }
 
 export const context = createContext<Formula | undefined>(undefined);
@@ -76,16 +89,63 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
       },
       {
         color: '#62aeef',
-        letter: 'x',
+        letter: 'y',
         value: 2,
         base10: 0,
         unity: undefined,
       },
     ],
+    colors: { x: '#e06b74', y: '#62aeef' },
+    result: {
+      simplified: 'x + y',
+      evaluate: 3,
+      error: null,
+    },
   });
 
-  const handleEquation = (event: ChangeEvent<HTMLTextAreaElement>) =>
-    setFormula({ ...formula, equation: event.target.value });
+  const calculate = (equation: string, parms: Parm[]) => {
+    const variables = parms.reduce((acumulator, parm) => {
+      return { ...acumulator, [parm.letter]: parm.value };
+    }, {});
+    let errorMessage = null;
+    let expression;
+    let simplified;
+    let evaluate;
+    try {
+      expression = parse(equation);
+      simplified = simplify(expression);
+      evaluate = simplified.evaluate(variables);
+    } catch (error) {
+      errorMessage = 'erro desconhecido';
+      if (error instanceof Error) errorMessage = error.message;
+      console.warn(errorMessage);
+    }
+    console.table({
+      simplified: simplified?.toString(),
+      evaluate: evaluate,
+      error: errorMessage,
+    });
+    return {
+      simplified: simplified?.toString(),
+      evaluate: evaluate,
+      error: errorMessage,
+    };
+  };
+
+  const setColors = (parms: Parm[]) => {
+    return parms.reduce((acumulator, parm) => {
+      return { ...acumulator, [parm.letter as keyof Colors]: parm.color };
+    });
+  };
+
+  const handleEquation = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setFormula({
+      parms: formula.parms,
+      equation: event.target.value,
+      result: calculate(event.target.value, formula.parms),
+      colors: formula.colors,
+    });
+  };
 
   const handleEdit = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newParms = formula.parms.map((parm, i) => {
@@ -97,13 +157,21 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
       }
       return parm;
     });
-    setFormula({ equation: formula.equation, parms: newParms });
+    setFormula({
+      equation: formula.equation,
+      parms: newParms,
+      result: calculate(formula.equation, newParms),
+      colors: setColors(newParms),
+    });
   };
 
   const handleNew = () => {
+    const newParms = [...formula.parms, defaultParm()];
     setFormula({
       equation: formula.equation,
-      parms: [...formula.parms, defaultParm()],
+      parms: newParms,
+      result: formula.result,
+      colors: setColors(newParms),
     });
   };
 
@@ -121,7 +189,7 @@ const EquationPage: FunctionComponent = (): JSX.Element => {
             handleNew={handleNew}
           />
         </RightContainer>
-        <Dashboard />
+        <Dashboard result={formula.result} colors={formula.colors} />
       </context.Provider>
     </Wrapper>
   );

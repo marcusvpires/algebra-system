@@ -1,108 +1,36 @@
 import * as S from './styled';
-import React, {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FunctionComponent } from 'react';
 
-import { simplify, evaluate } from 'mathjs';
-import { context } from '../../pages/equation';
+import { Result, Colors } from '../../pages/equation';
 
-type Expression = {
-  simplify: {
-    value: string | null;
-    error: string | null;
-  };
-  evaluate: {
-    value: string | null;
-    error: string | null;
-  };
-};
+interface Props {
+  result: Result;
+  colors: Colors | unknown;
+}
 
-const updateExpession = (
-  equation: string,
-  method: (equation: string) => any
-) => {
-  try {
-    return {
-      value: simplify(equation as string).toString(),
-      error: null,
-    };
-  } catch (error) {
-    let message = 'erro desconhecido';
-    if (error instanceof Error) message = error.message;
-    console.warn(message);
-    return {
-      value: 'error',
-      error: message,
-    };
-  }
-};
-
-const errorMessage = (error: any) => {
-  let message = 'erro desconhecido';
-  if (error instanceof Error) message = error.message;
-  console.warn(message);
-  return message;
-};
-
-const Dashboard: FunctionComponent = (): JSX.Element => {
-  const [expression, setExpression] = useState<Expression>({
-    simplify: { value: '', error: null },
-    evaluate: { value: '', error: null },
-  });
-  const formula = useContext(context);
-  const equation = formula?.equation?.trim();
-
-  useEffect(() => {
-    if (expression && equation) {
-      const newExpression = expression;
-      let simplified;
-      try {
-        simplified = simplify(equation);
-        newExpression.simplify = {
-          value: simplified.toString(),
-          error: null,
-        };
-      } catch (error) {
-        newExpression.simplify = {
-          value: null,
-          error: errorMessage(error),
-        };
-      }
-      if (simplified) {
-        try {
-          const parameters = formula?.parms.reduce((acumulator, parm) => {
-            return { ...acumulator, [parm.letter]: parm.value };
-          }, {});
-          newExpression.evaluate = {
-            value: simplified.evaluate(parameters),
-            error: null,
-          };
-        } catch (error) {
-          newExpression.evaluate = {
-            value: null,
-            error: errorMessage(error),
-          };
-        }
-      }
-      console.log(equation);
-      console.log(newExpression);
-      setExpression(newExpression);
-    }
-  }, [formula]);
-
+const Dashboard: FunctionComponent<Props> = ({
+  result,
+  colors,
+}): JSX.Element => {
   return (
     <S.Wrapper>
-      <S.Simplify error={expression?.simplify?.error}>
-        {expression?.simplify?.error}
-        {expression?.simplify?.value}
-      </S.Simplify>
-      <S.Simplify error={expression?.evaluate?.error}>
-        {expression?.evaluate?.error}
-        {expression?.evaluate?.value}
-      </S.Simplify>
+      <S.Result error={!result?.simplified}>
+        {result?.simplified
+          ? result?.simplified
+              ?.toString()
+              .split('')
+              .map((char: string, index: number) => {
+                return (
+                  <S.Char key={index} color={(colors as any)[char]}>
+                    {char}
+                  </S.Char>
+                );
+              })
+          : 'erro'}
+      </S.Result>
+      <S.Result error={result?.error}>
+        {result?.evaluate ? result?.evaluate?.toString() : result?.error}
+      </S.Result>
     </S.Wrapper>
   );
 };
