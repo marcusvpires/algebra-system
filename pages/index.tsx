@@ -31,12 +31,21 @@ export type Results = {
 
 const HomePage: FunctionComponent = () => {
   const [equation, setEquation] = useState<string>('');
-  const [results, setResults] = useState<Results>()
+  const [results, setResults] = useState<Results>();
   const [scope, setScope] = useState<Scope>({});
 
   const handleChange = (tag: string, value: any) => {
-    console.log(tag, value)
-  }
+    switch (tag) {
+      case 'scope':
+        console.log('Change scope:', value)
+        setScope(value);
+        break;
+      default:
+        console.warn(`'${tag}' não é uma tag válida`);
+        break;
+    }
+    console.log(tag, value);
+  };
 
   return (
     <S.Wrapper>

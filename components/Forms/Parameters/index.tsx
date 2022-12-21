@@ -1,4 +1,5 @@
 import React, { FunctionComponent, ChangeEvent, useState } from 'react';
+import { Scope } from '../../../pages';
 import Input from './Input';
 import * as S from './styled';
 
@@ -17,6 +18,22 @@ export type Parameter = {
 const Parameters: FunctionComponent<Props> = ({ handleChange }) => {
   const [array, setArray] = useState<Parameter[]>([]);
 
+  const scopeParser = (parameters: Parameter[]) => {
+    try {
+      const scope: Scope = parameters.reduce((acc, crr) => {
+        let multiplier = 1;
+        if (String(crr.key).trim() === '') return acc;
+        if (parseFloat(crr.base10)) multiplier = 10 ** parseFloat(crr.base10);
+        const value = parseFloat(crr.value) * multiplier;
+        return { ...acc, [crr.key]: { value: value, unity: crr.unity } };
+      }, {});
+      handleChange('scope', scope);
+    } catch (error) {
+      if (error instanceof Error) console.warn(error.message);
+      else console.warn("erro ao compilar 'scope'");
+    }
+  };
+
   const handleEdit = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newArray: Parameter[] = array;
     const parameter = array[index];
@@ -32,7 +49,8 @@ const Parameters: FunctionComponent<Props> = ({ handleChange }) => {
       );
     }
     newArray[index] = parameter;
-    setArray([ ...newArray ]);
+    scopeParser(newArray);
+    setArray([...newArray]);
   };
 
   const handleNew = () => {
