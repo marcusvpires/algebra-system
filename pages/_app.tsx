@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import GlobalStyles from '../assets/cssReset';
+import GlobalStyles from '../styles/cssReset';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
