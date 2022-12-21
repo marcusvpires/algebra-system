@@ -19,6 +19,7 @@ export const EquationInput = styled.textarea`
   border: none;
   outline: none;
   caret-color: #f2f2f3;
+  color: #f2f2f3;
 `;
 
 export const Preview = styled.div`
