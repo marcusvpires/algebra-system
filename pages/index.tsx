@@ -36,6 +36,9 @@ const HomePage: FunctionComponent = () => {
 
   const handleChange = (tag: string, value: any) => {
     switch (tag) {
+      case 'equation':
+        console.log('Change equation:', value)
+        setEquation(value)
       case 'scope':
         console.log('Change scope:', value)
         setScope(value);
