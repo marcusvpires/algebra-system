@@ -6,7 +6,7 @@ export const Wrapper = styled.main`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0d1117;
+  background-color: #12131E;
   font-family: 'Courier New', Courier, monospace;
   font-size: medium;
 `;

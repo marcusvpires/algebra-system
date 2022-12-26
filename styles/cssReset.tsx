@@ -28,6 +28,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     line-height: 1;
+    background-color: var(--bg-dark);
   }
   ol, ul {
     list-style: none;
@@ -48,11 +49,14 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  --background:	#282a36;
+  --bg-darker:	#090909;
+  --bg-dark:	#090909;
+  --bg-midium:	#131313;
+  --bg-light:	#1a191c;
+  --bg-lighter:	#272726;
   --currentLine:	#44475a;
   --selection:	#44475a;
   --foreground:	#f8f8f2;
-  --comment:	#6272a4;
   --cyan:	#8be9fd;
   --green:	#50fa7b;
   --orange:	#ffb86c;

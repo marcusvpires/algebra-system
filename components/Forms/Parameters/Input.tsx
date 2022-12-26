@@ -16,16 +16,16 @@ const Input: FunctionComponent<Props> = ({ index, value, handleEdit }) => {
   return (
     <S.Parameter>
       <S.Input
-        width='1.8rem'
         type='text'
         name='key'
         value={value.key}
         placeholder='v'
         onChange={handleChange}
-        maxLength={1}
+        maxLength={2}
+        width='2.5rem'
       />
       <S.Span>=</S.Span>
-      <S.InputNum
+      <S.Input
         width='8rem'
         type='text'
         name='value'
@@ -35,18 +35,17 @@ const Input: FunctionComponent<Props> = ({ index, value, handleEdit }) => {
         maxLength={10}
       />
       <S.Span>.10^</S.Span>
-      <S.InputNum
-        width='2.5rem'
-        type='number'
+      <S.Input
+        width='3rem'
+        type='text'
         name='base10'
         placeholder='0'
         value={value.base10}
         onChange={handleChange}
-        maxLength={2}
-        color='#f7545f'
+        maxLength={3}
       />
       <S.Input
-        width='8rem'
+        width='10rem'
         type='text'
         name='unity'
         value={value.unity}
@@ -54,6 +53,7 @@ const Input: FunctionComponent<Props> = ({ index, value, handleEdit }) => {
         onChange={handleChange}
         maxLength={10}
       />
+      <S.Delete>X</S.Delete>
     </S.Parameter>
   );
 };

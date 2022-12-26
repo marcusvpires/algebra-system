@@ -15,7 +15,7 @@ const calculate = (equation: string, scope: Scope | undefined) => {
   }
   if (scope) {
     try {
-      console.log(scope.values)
+      // console.log(scope.values)
       const expression = parse(equation)
       results.evaluate.latex = simplify(equation, scope).toTex()
       results.evaluate.latex = expression.compile().evaluate(scope.values);

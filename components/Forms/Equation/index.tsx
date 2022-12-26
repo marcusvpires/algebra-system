@@ -7,8 +7,9 @@ interface Props {
 }
 
 const Equation: FunctionComponent<Props> = ({ equation, handleChange }) => {
-  const handleInput = (event: ChangeEvent<HTMLTextAreaElement>) =>
+  const handleInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
     handleChange('equation', event.target.value);
+  }
   return (
     <S.Wrapper>
       <S.EquationInput

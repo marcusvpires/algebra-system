@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from 'react';
+import Collection from '../components/Collection';
 import Dashboard from '../components/Dashboard';
 import Forms from '../components/Forms';
 import calculate from '../math/calculate';
@@ -43,12 +44,12 @@ const HomePage: FunctionComponent = () => {
   const handleChange = (tag: string, value: any) => {
     switch (tag) {
       case 'equation':
-        console.log('Change equation:', value);
+        // console.log('Change equation:', value);
         setResults(calculate(value, scope));
         setEquation(value);
         break;
       case 'scope':
-        console.log('Change scope:', value);
+        // console.log('Change scope:', value);
         setResults(calculate(equation, value));
         setScope(value);
         break;
@@ -61,6 +62,7 @@ const HomePage: FunctionComponent = () => {
   return (
     <S.Wrapper>
       <Dashboard results={results} />
+      <Collection />
       <Forms handleChange={handleChange} equation={equation} />
     </S.Wrapper>
   );
