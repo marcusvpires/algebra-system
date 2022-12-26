@@ -28,15 +28,15 @@ const Parameters: FunctionComponent<Props> = ({ handleChange }) => {
         return { ...acc, [crr.key]: value };
       }, {});
       const unitys = parameters.reduce((acc, crr) => {
-        let unity
+        let unity;
         try {
-          if (!crr.unity) unity = parse('u')
-          else unity = parse(crr.unity)
+          if (!crr.unity) unity = parse('u');
+          else unity = parse(crr.unity);
         } catch (error) {
-          unity = parse('u')
+          unity = parse('u');
           console.warn(error);
         }
-        return ({ ...acc, [crr.key]: unity })
+        return { ...acc, [crr.key]: unity };
       }, {});
       handleChange('scope', { values, unitys });
     } catch (error) {
@@ -64,6 +64,12 @@ const Parameters: FunctionComponent<Props> = ({ handleChange }) => {
     setArray([...newArray]);
   };
 
+  const handleDelete = (index: number) => {
+    let newArray = array;
+    newArray.splice(index, 1);
+    setArray([...newArray]);
+  };
+
   const handleNew = () => {
     setArray([...array, { base10: '', unity: '', value: '', key: '' }]);
   };
@@ -77,6 +83,7 @@ const Parameters: FunctionComponent<Props> = ({ handleChange }) => {
           index={index}
           value={parameter}
           handleEdit={handleEdit}
+          handleDelete={handleDelete}
         />
       ))}
     </S.Wrapper>

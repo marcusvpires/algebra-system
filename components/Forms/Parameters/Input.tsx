@@ -5,13 +5,21 @@ import { Parameter } from '.';
 
 interface Props {
   handleEdit: (index: number, event: ChangeEvent<HTMLInputElement>) => void;
+  handleDelete: (index: number) => void;
   index: number;
   value: Parameter;
 }
 
-const Input: FunctionComponent<Props> = ({ index, value, handleEdit }) => {
+const Input: FunctionComponent<Props> = ({
+  index,
+  value,
+  handleEdit,
+  handleDelete,
+}) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
     handleEdit(index, event);
+
+  const handleChangeDelete = () => handleDelete(index);
 
   return (
     <S.Parameter>
@@ -53,7 +61,7 @@ const Input: FunctionComponent<Props> = ({ index, value, handleEdit }) => {
         onChange={handleChange}
         maxLength={10}
       />
-      <S.Delete>X</S.Delete>
+      <S.Delete onClick={handleChangeDelete}>X</S.Delete>
     </S.Parameter>
   );
 };
